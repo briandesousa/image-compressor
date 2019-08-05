@@ -1,0 +1,37 @@
+extends layout
+
+block content  
+  form
+    h2 Step 1
+    p Select one or more image files to upload and compress:
+    div(class='form-group row')
+      div(class='col-md-5')
+        div(class='custom-file')
+          input(type='file', class='custom-file-input', id='fileUpload', name='image', accept='image/png, image/jpeg', multiple='true')
+          label(class='custom-file-label', for='fileUpload') Choose file
+
+    h2 Step 2
+    p Start the upload and image compression process.
+    button(type='button', class='btn btn-primary', id='upload', name='upload') Start Upload
+    
+    h2 Step 3
+    p Links to each compressed image will appear below along with compression information.
+    
+    table(class='table')
+      thead
+        tr
+          th Uploaded Filename
+          th Compressed Version
+          th Original File Size
+          th Compressed File Size
+          th Compression Percentage
+      tbody
+        tr 
+          td dog.jpg
+          td 
+            a(href='#') dog-compressed.jpg
+          td 852.2KB
+          td 103.0KB
+          td 87.9%
+
+    
