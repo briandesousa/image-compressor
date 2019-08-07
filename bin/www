@@ -3,10 +3,27 @@
 /**
  * Module dependencies.
  */
+const app = require('../app');
+const debug = require('debug')('image-compressor:server');
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
 
-var app = require('../app');
-var debug = require('debug')('image-compressor:server');
-var http = require('http');
+/**
+ * Create temp directory to store app files
+ */
+const appTempDir = path.join(os.tmpdir(), 'image-compressor', 'uploads');
+try {
+  if (!fs.existsSync(appTempDir)) {
+    debug(`App temp directory not found, creating: ${appTempDir}`);
+    fs.mkdirSync(appTempDir, { recursive: true });
+  } else {
+    debug(`App temp directory already exists: ${appTempDir}`);
+  }
+} catch (err) {
+  throw new Error(`${err.code}: Failed to prepare app temp directory, ${appTempDir}`);
+}
 
 /**
  * Get port from environment and store in Express.

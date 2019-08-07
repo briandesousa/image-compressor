@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "debug": "DEBUG=image-compressor:* npm start",
+    "debug:win": "set DEBUG=image-compressor:* & npm start"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -11,6 +13,7 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
+    "multer": "^1.4.2",
+    "pug": "^2.0.4"
   }
 }
