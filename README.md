@@ -7,4 +7,5 @@ This app was generated with express-generator: `npx express-generator --pug --gi
 ## Tech Highlights
 
 - Node Express app using the Pug view engine
+- Multer to manage file uploads
 - Bootstrap 4 styling
