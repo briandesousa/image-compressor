@@ -29,8 +29,8 @@ router.post('/', upload.array('images'), function(req, res, next) {
   res.redirect('/');
 });
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
+  // TODO
   res.send('respond with an image');
 });
 
