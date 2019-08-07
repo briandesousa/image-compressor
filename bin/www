@@ -13,17 +13,18 @@ const os = require('os');
 /**
  * Create temp directory to store app files
  */
-const appTempDir = path.join(os.tmpdir(), 'image-compressor', 'uploads');
+global.appUploadDir = path.join(os.tmpdir(), 'image-compressor', 'uploads');
 try {
-  if (!fs.existsSync(appTempDir)) {
-    debug(`App temp directory not found, creating: ${appTempDir}`);
-    fs.mkdirSync(appTempDir, { recursive: true });
+  if (!fs.existsSync(global.appUploadDir)) {
+    debug(`App temp directory not found, creating: ${global.appUploadDir}`);
+    fs.mkdirSync(global.appUploadDir, { recursive: true });
   } else {
-    debug(`App temp directory already exists: ${appTempDir}`);
+    debug(`App temp directory already exists: ${global.appUploadDir}`);
   }
 } catch (err) {
-  throw new Error(`${err.code}: Failed to prepare app temp directory, ${appTempDir}`);
+  throw new Error(`${err.code}: Failed to prepare app temp directory, ${global.appUploadDir}`);
 }
+
 
 /**
  * Get port from environment and store in Express.
