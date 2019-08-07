@@ -1,18 +1,18 @@
 extends layout
 
 block content  
-  form
+  form(method='POST', enctype='multipart/form-data', action='/upload')
     h2 Step 1
     p Select one or more image files to upload and compress:
     div(class='form-group row')
       div(class='col-md-5')
         div(class='custom-file')
-          input(type='file', class='custom-file-input', id='fileUpload', name='image', accept='image/png, image/jpeg', multiple='true')
+          input(type='file', class='custom-file-input', name='images', accept='image/png, image/jpeg', multiple='true')
           label(class='custom-file-label', for='fileUpload') Choose file
 
     h2 Step 2
     p Start the upload and image compression process.
-    button(type='button', class='btn btn-primary', id='upload', name='upload') Start Upload
+    button(type='submit', class='btn btn-primary') Start Upload
     
     h2 Step 3
     p Links to each compressed image will appear below along with compression information.
