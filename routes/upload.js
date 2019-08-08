@@ -14,8 +14,18 @@ const diskStorage = multer.diskStorage({
 
 const upload = multer({ storage: diskStorage })
 
-function saveToSession(files) {
-  debug(`Saving info for ${files.length} uploaded file(s) to in-memory session`);
+function compressFile(file) {
+  // TODO implement actual compression
+
+  const compressedFileSize = Math.round(file.size / 3);
+  const spaceSavings = (1 - (compressedFileSize / file.size)) * 100;
+
+  return { 
+    ...file,
+    compressedFileName: `${file.filename}.compressed`,
+    compressedFileSize: compressedFileSize,
+    spaceSavings: spaceSavings
+  };
 }
 
 router.post('/', upload.array('images'), function(req, res, next) {
@@ -23,15 +33,21 @@ router.post('/', upload.array('images'), function(req, res, next) {
   debug(`Uploaded file count: ${fileUploadCount}`);
 
   if (fileUploadCount > 0) {
-    saveToSession(req.files);
+    debug(`Saving info for ${fileUploadCount} uploaded file(s) to in-memory session`);
+    req.session.files = req.session.files || [];
+
+    req.files.forEach(file => {
+      req.session.files.push(compressFile(file));
+    });
+
+    debug(`Number of files in session after upload is ${req.session.files.length}`);
   }
   
   res.redirect('/');
 });
 
 router.get('/', function(req, res, next) {
-  // TODO
-  res.send('respond with an image');
+  res.status(200).send(req.session.files || []);
 });
 
 module.exports = router;

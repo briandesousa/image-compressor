@@ -20,18 +20,23 @@ block content
     table(class='table')
       thead
         tr
-          th Uploaded Filename
-          th Compressed Version
+          th Original File Name
+          th Compressed File
           th Original File Size
           th Compressed File Size
-          th Compression Percentage
+          th Space Savings
       tbody
-        tr 
-          td dog.jpg
-          td 
-            a(href='#') dog-compressed.jpg
-          td 852.2KB
-          td 103.0KB
-          td 87.9%
+        each file in uploadedFiles
+          tr
+            td= file.originalname
+            td 
+              a(href=file.compressedFileName)= file.compressedFileName
+            td= Math.round(file.size / 1000) + ' kB'
+            td= Math.round(file.compressedFileSize / 1000) + ' kB'
+            td= Math.round(file.spaceSavings) + '%'
+        else
+          tr
+            td(colspan=5) No files uploaded yet
+          
 
     
