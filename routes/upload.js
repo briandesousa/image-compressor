@@ -5,6 +5,7 @@ const debug = require('debug')('image-compressor:upload');
 const jimp = require('jimp');
 const path = require('path');
 const fs = require('fs');
+const uuidv1 = require('uuid/v1');
 
 const diskStorage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,6 +22,7 @@ const diskStorage = multer.diskStorage({
 
 const upload = multer({ storage: diskStorage })
 
+// compress images, add to session and return file information object
 function compressFile(file, boundingWidth, boundingHeight) {
   const ext = path.extname(file.path);
   const fileNameNoExt = path.basename(file.path, ext);
@@ -42,7 +44,9 @@ function compressFile(file, boundingWidth, boundingHeight) {
               ...file,
               compressedFileName: compressedFileName,
               compressedFileSize: compressedFileSize,
-              spaceSavings: spaceSavings
+              compresssedFilePath: compressedFilePath,
+              spaceSavings: spaceSavings,
+              id: uuidv1()
             })
           });
         })
@@ -57,6 +61,7 @@ function compressFile(file, boundingWidth, boundingHeight) {
     });
 }
 
+// upload one or more images and compress
 router.post('/', upload.array('images'), async (req, res) => {
   const fileUploadCount = req.files ? req.files.length : 0;
   debug(`Uploaded file count: ${fileUploadCount}`);
@@ -76,8 +81,18 @@ router.post('/', upload.array('images'), async (req, res) => {
   res.redirect('/');
 });
 
+// return a list of all uploaded images in session
 router.get('/', function(req, res, next) {
   res.status(200).send(req.session.files || []);
+});
+
+// return a specific image in session
+router.get('/:uploadId', function(req, res) {
+  const file = req.session.files.find(file => file.id === req.params.uploadId);
+  if (file) {
+    return res.sendFile(path.resolve(file.compresssedFilePath));
+  }
+  return res.status(404).send('upload not found');
 });
 
 module.exports = router;
