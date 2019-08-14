@@ -40,6 +40,9 @@ block content
           tr
             td(colspan=5) No files uploaded yet
 
+    if lastTiming != -1
+      p(class='col-md-12 font-italic') Image compression completed in #{lastTiming} seconds
+
 block script
   script.
     function fileSelectionChange() {

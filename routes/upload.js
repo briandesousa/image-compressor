@@ -63,6 +63,8 @@ function compressFile(file, boundingWidth, boundingHeight) {
 
 // upload one or more images and compress
 router.post('/', upload.array('images'), async (req, res) => {
+  const startTime = new Date();
+
   const fileUploadCount = req.files ? req.files.length : 0;
   debug(`Uploaded file count: ${fileUploadCount}`);
 
@@ -78,6 +80,9 @@ router.post('/', upload.array('images'), async (req, res) => {
     debug(`Number of files in session after upload is ${req.session.files.length}`);
   }
   
+  const endTime = new Date();
+  req.session.lastTiming = (endTime.getTime() - startTime.getTime()) / 1000;
+
   res.redirect('/');
 });
 

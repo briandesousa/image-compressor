@@ -4,7 +4,8 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { 
-    uploadedFiles: req.session.files || [] 
+    uploadedFiles: req.session.files || [],
+    lastTiming: req.session.lastTiming || -1
   });
 });
 
